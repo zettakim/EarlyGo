@@ -16,6 +16,13 @@ func main() {
 
 	sum, diff = sumAndDiff2(6, 2)
 	fmt.Println(sum, diff)
+
+	r = sum3(1, 2, 3, 4, 5)
+	fmt.Println(r)
+
+	n := []int{1, 2, 3, 4, 5}
+	r = sum3(n...)
+	fmt.Println(r)
 }
 
 func sum(a int, b int) int {
@@ -25,6 +32,14 @@ func sum(a int, b int) int {
 func sum2(a int, b int) (r int) {
 	r = a + b
 	return
+}
+
+func sum3(n ...int) int { //가변인자
+	total := 0
+	for _, value := range n {
+		total += value
+	}
+	return total
 }
 
 func sumAndDiff(a int, b int) (int, int) {
