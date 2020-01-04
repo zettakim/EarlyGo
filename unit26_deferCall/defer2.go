@@ -5,7 +5,8 @@ import (
 	"os"
 )
 
-func ReadHello() { // Read file
+// ReadHello : Read file
+func ReadHello() {
 	file, err := os.Open("hello.txt")
 	defer file.Close()
 
