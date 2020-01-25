@@ -10,6 +10,20 @@ func sum(a int, b int, c chan int) {
 	c <- a + b
 }
 
+func producer(c chan<- int) {
+	for i := 0; i < 5; i++ {
+		c <- i
+	}
+	c <- 100
+}
+
+func consumer(c <-chan int) {
+	for i := range c {
+		fmt.Println(i)
+	}
+	fmt.Println(<-c)
+}
+
 func main() {
 	c := make(chan int)
 
@@ -80,4 +94,12 @@ func main() {
 	close(c3)
 	a, ok = <-c3
 	fmt.Println(a, ok)
+	fmt.Println("-----------------")
+
+	c4 := make(chan int)
+
+	go producer(c4)
+	go consumer(c4)
+
+	fmt.Scanln()
 }
