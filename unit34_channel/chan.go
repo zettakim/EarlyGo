@@ -6,8 +6,38 @@ import (
 	"time"
 )
 
+func num(a, b int) <-chan int {
+	out := make(chan int)
+	go func() {
+		out <- a
+		out <- b
+		close(out)
+	}()
+	return out
+}
+
+func sum3(c <-chan int) <-chan int {
+	out := make(chan int)
+	go func() {
+		r := 0
+		for i := range c {
+			r = r + i
+		}
+		out <- r
+	}()
+	return out
+}
+
 func sum(a int, b int, c chan int) {
 	c <- a + b
+}
+
+func sum2(a, b int) <-chan int {
+	out := make(chan int)
+	go func() {
+		out <- a + b
+	}()
+	return out
 }
 
 func producer(c chan<- int) {
@@ -101,5 +131,15 @@ func main() {
 	go producer(c4)
 	go consumer(c4)
 
+	fmt.Println("-----------------")
+	c5 := sum2(1, 2)
+	fmt.Println("sum2:", <-c5)
+	fmt.Println("-----------------")
+
+	c6 := num(1, 2)
+	out6 := sum3(c6)
+
+	fmt.Println("sum3:", <-out6)
 	fmt.Scanln()
+
 }
